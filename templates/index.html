@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet"  href="{{ url_for('static', filename='client.css') }}" type="text/css" />
+  <script src="{{ url_for('static', filename='client.js') }}" type="text/javascript" defer></script>
+  <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+  <title>Sweden Home Predictor</title>
+</head>
+
+<body>
+  <div class="logo-container">
+    <img src="{{url_for('static', filename='sweden_Flag.png') }}" class="logo" />
+  </div>
+  <h1>Price Predictor for Swedish House</h1>
+  <form id="predictionForm">
+    <label for="houseType">House Type:</label>
+    <select id="houseType" name="houseType">
+      <option value="Lägenhet">Lägenhet</option>
+      <option value="Villa">Villa</option>
+      <option value="Fritidshus">Fritidshus</option>
+      <option value="Kedjehus">Kedjehus</option>
+      <option value="Parhus">Parhus</option>
+      <option value="Tomt">Tomt</option>
+    </select>
+
+    <br>
+    <label for="municipality">Municipality:</label>
+    <select id="municipalities" name="municipality" size="1"> </select> <br />
+    <span id="municipalityError" class="error"></span><br />
+
+    <label for="living_area">Living Area (square meters):</label>
+    <input type="number" id="living_area" name="living_area" /><br />
+    <span id="livingAreaError" class="error"></span><br />
+
+    <label for="built_on">Built On:</label>
+    <select id="built_on" name="built_on">
+      <option value="Before 1900s">Before 1900s</option>
+      <option value="1900-1950">1900-1950</option>
+      <option value="1951-2000">1951-2000</option>
+      <option value="2001-2010">2001-2010</option>
+      <option value="2011-present">2011-present</option>
+    </select>
+    <br />
+    </div>
+    <br />
+
+
+    <label for="lift">Lift:</label>
+    <select id="lift" name="lift">
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select><br />
+    <br />
+
+    <label for="balcony">Balcony:</label>
+    <select id="balcony" name="balcony">
+      <option value="Yes">Yes</option>
+      <option value="No">No</option>
+    </select>
+    <br />
+
+    <button type="button" onclick="prediction()">Predict</button>
+  </form>
+  <div id="pred_value"></div>
+  <div class="disclaimer">
+    <p>
+      For more information about the model (<a href="https://github.com/priyansh16/PricePrediction"
+        target="_blank">Github</a>)<br />
+      Built by Priyansh Gupta (<a href="https://www.linkedin.com/in/pggupta/" target="_blank">Linkedin</a>)<br />
+    </p>
+  </div>
+</body>
+
+</html>
