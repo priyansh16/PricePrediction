@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monitoring Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='client.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+
+        <h1 class="dashboard-title">📊 Monitoring Dashboard</h1>
+        
+        <div class="dashboard-grid">
+        
+        <div>
+        <h2 class="section-title">Prediction Usage Trend</h2>
+        <div class="chart-container">
+        <canvas id="usageChart"></canvas>
+        </div>
+        </div>
+        
+        <div>
+        <h2 class="section-title">Average Price Trend</h2>
+        <div class="chart-container">
+        <canvas id="avgPriceChart"></canvas>
+        </div>
+        </div>
+        
+        <div>
+        <h2 class="section-title">Municipality Distribution</h2>
+        <div class="chart-container">
+        <canvas id="municipalityChart"></canvas>
+        </div>
+        </div>
+        
+        <div>
+        <h2 class="section-title">Recent Predictions</h2>
+        <table class="monitoring-table" id="logsTable">
+        <thead>
+        <tr>
+        <th>Municipality</th>
+        <th>Living Area</th>
+        <th>Prediction</th>
+        <th>Timestamp</th>
+        </tr>
+        </thead>
+        <tbody></tbody>
+        </table>
+        </div>
+        
+        </div>
+        
+        </div>
+
+<script>
+let usageChart;
+let avgChart;
+let municipalityChart;
+
+function loadDashboard() {
+    fetch('/monitoring-data')
+    .then(response => response.json())
+    .then(data => {
+
+        if (!data.usage_dates) return;
+
+        // Usage Chart
+        if (usageChart) {
+            usageChart.destroy();
+        }
+        usageChart = new Chart(document.getElementById("usageChart"), {
+            type: "line",
+            data: {
+                labels: data.usage_dates,
+                datasets: [{
+                    label: "Prediction Count Per Day",
+                    data: data.usage_counts,
+                    borderColor: "#2ecc71",
+                    backgroundColor: "rgba(46, 204, 113, 0.3)",
+                    fill: true,
+                    tension: 0.3,
+                    borderWidth: 2
+                }]
+            }
+        });
+
+        // Average Price Chart
+        if (avgChart) {
+            avgChart.destroy();
+        }
+        let datasets = [];
+
+        const colors = ["#9b59b6", "#e67e22", "#3498db", "#2ecc71", "#e74c3c", "#f1c40f"];
+        let colorIndex = 0
+
+        for (const [houseType, values] of Object.entries(data.avg_values)) {
+            datasets.push({
+                label: houseType,
+                data: values,
+                borderColor: colors[colorIndex % colors.length],
+                backgroundColor: colors[colorIndex % colors.length] + "33",
+                fill: false,
+                tension: 0.3
+            });
+        
+            colorIndex++;
+        }
+        avgChart = new Chart(document.getElementById("avgPriceChart"), {
+            type: "line",
+            data: {
+                labels: data.avg_dates,
+                datasets: datasets
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "top"
+                    }
+                }
+            }
+        });
+
+        // Municipality Chart
+        if (municipalityChart) {
+            municipalityChart.destroy();
+        }
+
+        municipalityChart = new Chart(document.getElementById("municipalityChart"), {
+            type: "bar",
+            data: {
+                labels: data.municipalities,
+                datasets: [{
+                    label: "Predictions per Municipality",
+                    data: data.municipality_counts,
+                    backgroundColor: ["#3498db", "#e67e22", "#e74c3c", "#1abc9c", "#f1c40f"]
+                }]
+            }
+        });
+
+        // Populate recent logs table
+        const tableBody = document.querySelector("#logsTable tbody");
+        tableBody.innerHTML = "";
+
+        data.recent_logs.forEach(row => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${row.Municipality}</td>
+                <td>${row.Living_area}</td>
+                <td>${row.Prediction}</td>
+                <td>${row.Timestamp}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+
+    });
+    console.log('refreshed')
+}
+
+loadDashboard();
+
+// Auto refresh every 60 seconds
+setInterval(() => {
+    loadDashboard(); },
+    60000);
+
+
+
+</script>
+
+</body>
+</html>
