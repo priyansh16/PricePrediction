@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+
+        <div class="card shadow-lg border-0 p-5">
+
+            <div class="row align-items-center">
+
+                <!-- Profile Image -->
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                    <img src="{{ url_for('static', filename='img/profile.png') }}"
+                         class="rounded-circle shadow"
+                         width="180">
+                </div>
+
+                <!-- Info Section -->
+                <div class="col-md-8">
+
+                    <h2 class="fw-bold mb-2">Priyansh Gupta</h2>
+
+                    <p class="text-muted mb-3">
+                        Data Scientist & ML Engineer building production-grade ML systems.
+                    </p>
+
+                    <p>
+                        📧 <strong>Email:</strong> gupta.priyansh918@gmail.com
+                    </p>
+
+                    <div class="mb-3">
+                        <a href="https://linkedin.com/in/pggupta"
+                           class="btn btn-outline-primary me-2"
+                           target="_blank">
+                            LinkedIn
+                        </a>
+
+                        <a href="https://github.com/priyansh16"
+                           class="btn btn-outline-dark"
+                           target="_blank">
+                            GitHub
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Project Section -->
+            <div>
+                <h5 class="fw-bold mb-3">About This Project</h5>
+
+                <p class="text-muted">
+                    Swedish House Price Prediction is a production-style ML application
+                    that predicts housing prices based on structured property attributes.
+                    The system includes real-time prediction APIs, logging, and a
+                    monitoring dashboard for usage analytics.
+                </p>
+
+                <h6 class="fw-semibold mt-4 mb-3">Tech Stack</h6>
+
+                <div class="row text-center">
+
+                    <div class="col-4 col-md-3 mb-4">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg"
+                            width="40" class="mb-2">
+                        <div>Flask</div>
+                    </div>
+
+                    <div class="col-4 col-md-3 mb-4">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+                            width="40" class="mb-2">
+                        <div>Scikit-Learn</div>
+                    </div>
+
+                    <div class="col-4 col-md-3 mb-4">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg"
+                            width="40" class="mb-2">
+                        <div>Pandas</div>
+                    </div>
+                    
+                    <div class="col-4 col-md-3 mb-4">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
+                            width="40" class="mb-2">
+                        <div>AWS</div>
+                    </div>
+
+                    <div class="col-4 col-md-3 mb-4">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg"
+                            width="40" class="mb-2">
+                        <div>Bootstrap</div>
+                    </div>
+
+                    <div class="col-4 col-md-3 mb-4">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                            width="40" class="mb-2">
+                        <div>JavaScript</div>
+                    </div>
+
+                    <div class="col-4 col-md-3 mb-4">
+                        <img src="https://cdn.simpleicons.org/chartdotjs/FF6384"
+                            width="40" class="mb-2">
+                        <div>Chart.js</div>
+                    </div>
+
+                    
+
+                    <div class="col-4 col-md-3 mb-4">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/selenium/selenium-original.svg"
+                            width="40" class="mb-2">
+                        <div>Selenium</div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+ 
+{% endblock %}

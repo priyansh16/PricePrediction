@@ -261,48 +261,17 @@ window.onload = function () {
   
   function prediction() {
     document.getElementById("pred_value").textContent = "Predicting...";
-    var municipalityInput = document.getElementById("municipalities").value.trim();
-  
-    var municipalityError = document.getElementById("municipalityError");
-    municipalityError.textContent = "";
-  
-    if (!municipalities.includes(municipalityInput)) {
-      municipalityError.textContent =
-        "Please select a valid Municipality from the list.";
-      return;
-    }
-  
+    
     // Validate Living Area
     var livingAreaInput = parseFloat(
       document.getElementById("living_area").value
     );
-    var livingAreaError = document.getElementById("livingAreaError");
-    livingAreaError.textContent = "";
   
-    if (isNaN(livingAreaInput) || livingAreaInput <= 0) {
-      livingAreaError.textContent =
-        "Living Area must be a positive number greater than 0.";
+    if (!livingAreaInput || livingAreaInput <= 0) {
+      alert("Living Area must be a positive number greater than 0.");
       return;
     }
 
-    let xmlr = new XMLHttpRequest();
-    xmlr.open("POST", "/predict", true);
-  
-    xmlr.setRequestHeader("Content-Type", "application/json;charset = utf-8");
-  
-    xmlr.onreadystatechange = function () {
-      if (xmlr.readyState == 4) {
-        if (xmlr.status == 200) {
-          let jsonResponse = JSON.parse(xmlr.responseText);
-          document.getElementById("pred_value").textContent =
-            jsonResponse.value + " million in Kr";
-          console.log("Success");
-        } else {
-          console.error("Error");
-        }
-      }
-    };
-  
     var formData = {
       House_type: document.getElementById("houseType").value,
       Municipality: document.getElementById("municipalities").value,
@@ -311,7 +280,23 @@ window.onload = function () {
       Lift: document.getElementById("lift").value,
       Balcony: document.getElementById("balcony").value,
     };
-  
-    xmlr.send(JSON.stringify(formData));
+
+    fetch("/predict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(jsonResponse => {
+      document.getElementById("pred_value").textContent =
+        jsonResponse.value + " million in Kr";
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      document.getElementById("pred_value").textContent =
+        "Something went wrong.";
+    });
   }
   

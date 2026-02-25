@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+
+        <div class="card shadow-lg border-0 p-4">
+            <h3 class="text-center text-primary mb-4">
+                House Price Estimator
+            </h3>
+
+            <form id="predictionForm">
+
+                <div class="mb-3">
+                    <label class="form-label">House Type</label>
+                    <select class="form-select" id="houseType">
+                        <option value="Lägenhet">Lägenhet</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Fritidshus">Fritidshus</option>
+                        <option value="Kedjehus">Kedjehus</option>
+                        <option value="Parhus">Parhus</option>
+                        <option value="Tomt">Tomt</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Municipality</label>
+                    <select class="form-select" id="municipalities"></select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Living Area (sqm)</label>
+                    <input type="number" class="form-control" id="living_area" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Built On</label>
+                    <select class="form-select" id="built_on">
+                        <option value="Before 1900s">Before 1900s</option>
+                        <option value="1900-1950">1900-1950</option>
+                        <option value="1951-2000">1951-2000</option>
+                        <option value="2001-2010">2001-2010</option>
+                        <option value="2011-present">2011-present</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Lift</label>
+                    <select class="form-select" id="lift">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label">Balcony</label>
+                    <select class="form-select" id="balcony">
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+
+                <div class="d-grid">
+                    <button type="button"
+                            class="btn btn-primary btn-lg"
+                            onclick="prediction()">
+                        Predict Price
+                    </button>
+                </div>
+
+            </form>
+
+            <div id="pred_value"
+                 class="text-center mt-4 fw-bold text-success fs-5">
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/client.js') }}"></script>
+{% endblock %}

@@ -12,9 +12,18 @@ model_path = os.path.join(BASE_DIR, "model", "house_price_pipeline.pkl")
 # Load pipeline
 pipeline = pickle.load(open(model_path, "rb"))
 
+
 @app.route("/")
-def root():
-    return render_template("index.html")
+def home():
+    return render_template("home.html")
+
+@app.route("/monitoring")
+def monitoring():
+    return render_template("monitoring.html")
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -38,6 +47,7 @@ def predict():
         log_data["Timestamp"] = datetime.datetime.now()
         
         log_file = os.path.join(BASE_DIR, "model_logs.csv")
+        
         # Append to CSV, only write header if file doesn't exist
         log_data.to_csv(
             log_file, 
@@ -51,19 +61,13 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)})
     
-    
-# ------------------------
-# Monitoring Dashboard Page
-# ------------------------
-
-@app.route("/monitoring")
-def monitoring():
-    return render_template("monitoring.html")
-
 
 @app.route("/monitoring-data")
 def monitoring_data():
-
+    
+    start = request.args.get("start")
+    end = request.args.get("end")
+    
     log_file = os.path.join(BASE_DIR, "model_logs.csv")
 
     if not os.path.exists(log_file):
@@ -77,6 +81,24 @@ def monitoring_data():
 
     df["Timestamp"] = pd.to_datetime(df["Timestamp"], errors="coerce")
     df["date"] = df["Timestamp"].dt.date
+    
+    # Filter based on dates
+    if start and end:
+        start_date = pd.to_datetime(start).date()
+        end_date = pd.to_datetime(end).date()
+        df = df[(df["date"] >= start_date) &
+                (df["date"] <= end_date)]
+        
+    if df.empty:
+        return jsonify({
+            "usage_dates": [],
+            "usage_counts": [],
+            "avg_dates": [],
+            "avg_values": {},
+            "municipalities": [],
+            "municipality_counts": [],
+            "recent_logs": []
+        })
 
     # Prediction count per day
     usage = df.groupby("date").size()
@@ -88,22 +110,25 @@ def monitoring_data():
         index = "date",
         columns = "House_type",
         values = "Prediction"
-    ).fillna(method="ffill")
+    ).sort_index()
     
-    pivot_avg = pivot_avg.sort_index()
-    
+    avg_values = pivot_avg.to_dict(orient="list")
+
+    # Convert NaN → None for valid JSON
+    for key in avg_values:
+        avg_values[key] = [
+            None if pd.isna(x) else x for x in avg_values[key]
+            ]
+
     # Municipality distribution
     municipality_counts = df["Municipality"].value_counts()
-    print(f"usage_dates: {usage.index.astype(str).tolist()}, usage_counts: {usage.tolist()}, avg_dates:{pivot_avg.index.astype(str).tolist()}")
-    print(f"avg_values: {pivot_avg.to_dict(orient = "list")}, municipalities: {municipality_counts.index.tolist()}, municipality_counts: {municipality_counts.tolist()}")
-    print(f"recent_logs: {df.tail(5).to_dict(orient="records")}")
     
     return jsonify({
         "usage_dates": usage.index.astype(str).tolist(),
         "usage_counts": usage.tolist(),
         
         "avg_dates": pivot_avg.index.astype(str).tolist(),
-        "avg_values": pivot_avg.to_dict(orient = "list"),
+        "avg_values": avg_values,
         
         "municipalities": municipality_counts.index.tolist(),
         "municipality_counts": municipality_counts.tolist(),
