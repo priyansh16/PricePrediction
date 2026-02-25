@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="row justify-content-center">
-    <div class="col-md-6 col-lg-5">
+<div class="row justify-content-center align-items-center" style="min-height: 80vh;">
+        <div class="col-md-7 col-lg-6">
 
-        <div class="card shadow-lg border-0 p-4">
+            <div class="card shadow-lg border-0 p-5">
             <h3 class="text-center text-primary mb-4">
                 House Price Estimator
             </h3>
@@ -12,8 +12,10 @@
             <form id="predictionForm">
 
                 <div class="mb-3">
-                    <label class="form-label">House Type</label>
-                    <select class="form-select" id="houseType">
+                    <label class="form-label">
+                        House Type <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="houseType" required>
                         <option value="Lägenhet">Lägenhet</option>
                         <option value="Villa">Villa</option>
                         <option value="Fritidshus">Fritidshus</option>
@@ -24,18 +26,24 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Municipality</label>
-                    <select class="form-select" id="municipalities"></select>
+                    <label class="form-label">
+                        Municipality <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="municipalities" required></select>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Living Area (sqm)</label>
+                    <label class="form-label">
+                        Living Area (sqm) <span class="text-danger">*</span>
+                    </label>
                     <input type="number" class="form-control" id="living_area" required>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Built On</label>
-                    <select class="form-select" id="built_on">
+                    <label class="form-label">
+                        Built On <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="built_on" required>
                         <option value="Before 1900s">Before 1900s</option>
                         <option value="1900-1950">1900-1950</option>
                         <option value="1951-2000">1951-2000</option>
@@ -45,16 +53,20 @@
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Lift</label>
-                    <select class="form-select" id="lift">
+                    <label class="form-label">
+                        Lift <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="lift" required>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
                     </select>
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label">Balcony</label>
-                    <select class="form-select" id="balcony">
+                    <label class="form-label">
+                        Balcony <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" id="balcony" required>
                         <option value="Yes">Yes</option>
                         <option value="No">No</option>
                     </select>
