@@ -260,14 +260,13 @@ window.onload = function () {
 
   
   function prediction() {
-    document.getElementById("pred_value").textContent = "Predicting...";
     
     // Validate Living Area
     var livingAreaInput = parseFloat(
       document.getElementById("living_area").value
     );
   
-    if (!livingAreaInput || livingAreaInput <= 0) {
+    if (!livingAreaInput || livingAreaInput <= 0.0) {
       alert("Living Area must be a positive number greater than 0.");
       return;
     }
@@ -281,6 +280,7 @@ window.onload = function () {
       Balcony: document.getElementById("balcony").value,
     };
 
+    document.getElementById("pred_value").textContent = "Predicting...";
     fetch("/predict", {
       method: "POST",
       headers: {
