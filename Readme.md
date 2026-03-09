@@ -1,5 +1,5 @@
 # 🏠 Swedish Property Price Predictor
-**An End-to-End Machine Learning Pipeline: From Selenium-based Extraction to Gradient Boosting (GBM) Modeling.**
+**An End-to-End Machine Learning Pipeline: From Selenium-based Extraction toProduction Deployment at AWS EC2.**
 
 A production-ready Machine Learning system that scrapes, processes, and predicts Swedish housing prices. This project moves beyond static datasets to handle real-world, messy web data with a focus on reproducibility and deployment.
 
